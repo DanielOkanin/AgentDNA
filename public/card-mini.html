@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">AI DNA Card 🧬</title>
+
+  <!-- Open Graph / Social Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" id="og-title" content="AI DNA Card 🧬">
+  <meta property="og:description" id="og-description" content="What my AI knows about me">
+  <meta property="og:image" id="og-image" content="">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" id="twitter-title" content="AI DNA Card 🧬">
+  <meta name="twitter:description" id="twitter-description" content="What my AI knows about me">
+  <meta name="twitter:image" id="twitter-image" content="">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0412;
+      --violet: #8b5cf6;
+      --purple: #a855f7;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --glow: rgba(139, 92, 246, 0.4);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: radial-gradient(circle at top, #1a0a2e 0%, #0a0412 50%, #000000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Optimized for screenshot: 1080x1920 (story) or 1200x630 (OG) */
+    .card-mini {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 60px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Background particles */
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--violet);
+      border-radius: 50%;
+      opacity: 0.4;
+      box-shadow: 0 0 10px var(--glow);
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--violet), var(--purple));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin-bottom: 24px;
+      box-shadow: 0 0 40px var(--glow);
+      border: 4px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .name {
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--violet) 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+
+    .bio {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.4;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--violet);
+      text-shadow: 0 0 20px var(--glow);
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* DNA Highlights */
+    .dna-highlights {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .dna-title {
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .dna-item {
+      background: rgba(139, 92, 246, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .dna-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+
+    .dna-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .dna-key {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .dna-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Badges Row */
+    .badges-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(168, 85, 247, 0.2));
+      border: 2px solid rgba(139, 92, 246, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 4px 16px var(--glow);
+    }
+
+    .badge.locked {
+      opacity: 0.3;
+      filter: grayscale(1);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+    }
+
+    .watermark {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .watermark .domain {
+      color: var(--violet);
+      font-weight: 700;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 16px 40px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--violet), var(--purple));
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 8px 24px var(--glow);
+      transition: all 0.3s;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(139, 92, 246, 0.2);
+      border-top-color: var(--violet);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error {
+      text-align: center;
+      padding: 40px;
+    }
+
+    .error-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    /* Mobile optimization */
+    @media (max-width: 640px) {
+      .card-mini {
+        padding: 40px 24px;
+      }
+
+      .name {
+        font-size: 36px;
+      }
+
+      .stats-row {
+        gap: 24px;
+      }
+
+      .stat-value {
+        font-size: 28px;
+      }
+
+      .dna-value {
+        font-size: 16px;
+      }
+    }
+
+    /* Screenshot-ready aspect ratio hints */
+    @media (min-width: 641px) {
+      .card-mini {
+        aspect-ratio: 9/16; /* Instagram story */
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+  <div id="app"></div>
+
+  <script>
+    const API = window.location.origin;
+    const agentName = window.location.pathname.split('/card/')[1]?.replace('/mini', '');
+
+    function generateInitials(name) {
+      return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.width = (2 + Math.random() * 2) + 'px';
+        particle.style.height = particle.style.width;
+        container.appendChild(particle);
+      }
+    }
+
+    const CATEGORY_ICONS = {
+      preferences: '🎨',
+      skills: '💼',
+      habits: '🧠',
+      personal: '👤',
+      work: '💻',
+      communication: '🗣️',
+      health: '❤️',
+      trading: '📈',
+      learning: '📚',
+      default: '🧬'
+    };
+
+    function getCategoryIcon(category) {
+      return CATEGORY_ICONS[category?.toLowerCase()] || CATEGORY_ICONS.default;
+    }
+
+    async function loadAndRender() {
+      const app = document.getElementById('app');
+
+      if (!agentName) {
+        app.innerHTML = `
+          <div class="error">
+            <div class="error-icon">🤖</div>
+            <h2>No agent specified</h2>
+          </div>
+        `;
+        return;
+      }
+
+      app.innerHTML = `
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <div style="color: var(--text-muted);">Loading...</div>
+        </div>
+      `;
+
+      try {
+        const [profileRes, badgesRes, dnaRes] = await Promise.all([
+          fetch(`${API}/api/public/agents/${agentName}`),
+          fetch(`${API}/api/social/agents/${agentName}/badges`),
+          fetch(`${API}/api/recall?agent=${agentName}&limit=5`)
+        ]);
+
+        const profileData = await profileRes.json();
+        const badgesData = await badgesRes.json();
+        const dnaData = await dnaRes.json();
+
+        if (!profileData.ok || !profileData.profile) {
+          throw new Error('Agent not found');
+        }
+
+        const { profile, topDNA } = profileData;
+        const badges = (badgesData.badges || []).slice(0, 6);
+        const dnaEntries = (dnaData.memories || topDNA || []).slice(0, 5);
+
+        const displayName = profile.displayName || agentName;
+        const title = `${displayName}'s AI DNA Card 🧬`;
+
+        document.getElementById('page-title').textContent = title;
+        document.getElementById('og-title').setAttribute('content', title);
+        document.getElementById('twitter-title').setAttribute('content', title);
+
+        const agentCount = 1;
+        const dnaCount = dnaEntries.length;
+        const badgeCount = badges.filter(b => b.earned).length;
+
+        app.innerHTML = `
+          <div class="card-mini">
+            <div class="header">
+              <div class="avatar">
+                ${profile.avatarUrl ? `<img src="${profile.avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : generateInitials(displayName)}
+              </div>
+              <h1 class="name">${displayName}</h1>
+              <p class="bio">${profile.bio || profile.status || 'My AI DNA Card'}</p>
+              <div class="stats-row">
+                <div class="stat">
+                  <span class="stat-value">${agentCount}</span>
+                  <span class="stat-label">Agents</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">${dnaCount}</span>
+                  <span class="stat-label">DNA Facts</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">${badgeCount}</span>
+                  <span class="stat-label">Badges</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dna-highlights">
+              <div class="dna-title">What My AI Knows</div>
+              ${dnaEntries.map(entry => `
+                <div class="dna-item">
+                  <div class="dna-icon">${getCategoryIcon(entry.category)}</div>
+                  <div class="dna-content">
+                    <div class="dna-key">${entry.key}</div>
+                    <div class="dna-value">${typeof entry.value === 'object' ? JSON.stringify(entry.value) : entry.value}</div>
+                  </div>
+                </div>
+              `).join('')}
+              ${dnaEntries.length === 0 ? '<p style="text-align:center;color:var(--text-muted);font-size:14px;">No DNA entries yet</p>' : ''}
+            </div>
+
+            ${badges.length > 0 ? `
+              <div class="badges-row">
+                ${badges.map(badge => `
+                  <div class="badge ${badge.earned ? '' : 'locked'}">
+                    ${badge.badge_emoji || (badge.earned ? '🏆' : '?')}
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+
+            <div class="footer">
+              <div class="watermark">
+                🧬 <span class="domain">agentdna.dev/${agentName}</span>
+              </div>
+              <a href="${API}/card/${agentName}" class="cta-btn">View Full Card</a>
+            </div>
+          </div>
+        `;
+
+        createParticles();
+
+      } catch (err) {
+        app.innerHTML = `
+          <div class="error">
+            <div class="error-icon">⚠️</div>
+            <h2>Error loading profile</h2>
+            <p style="color:var(--text-muted);">${err.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    loadAndRender();
+  </script>
+</body>
+</html>

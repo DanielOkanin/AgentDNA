@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<title>בדיקת ראייה ביתית לילדים</title>
+<style>
+@page { size: A4; margin: 1.5cm; }
+body { font-family: Arial, sans-serif; text-align: center; background: white; color: black; margin: 0; padding: 20px; }
+h1 { font-size: 22px; margin-bottom: 5px; }
+.subtitle { font-size: 14px; color: #666; margin-bottom: 20px; }
+.row { margin: 12px 0; display: flex; justify-content: center; align-items: center; gap: 10px; }
+.label { font-size: 12px; color: #999; width: 50px; text-align: left; flex-shrink: 0; }
+.letters { letter-spacing: 0.3em; font-weight: bold; font-family: 'Courier New', monospace; }
+.size-1 { font-size: 72px; }
+.size-2 { font-size: 60px; }
+.size-3 { font-size: 48px; }
+.size-4 { font-size: 40px; }
+.size-5 { font-size: 32px; }
+.size-6 { font-size: 26px; }
+.size-7 { font-size: 22px; }
+.size-8 { font-size: 18px; }
+.size-9 { font-size: 14px; }
+.size-10 { font-size: 11px; }
+.divider { border-top: 1px solid #ddd; margin: 15px 0; }
+.instructions { text-align: right; font-size: 13px; line-height: 1.8; max-width: 500px; margin: 0 auto 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+.instructions h2 { font-size: 16px; margin: 0 0 8px; }
+.cover-test { margin-top: 20px; padding: 15px; background: #f0f0ff; border-radius: 8px; max-width: 500px; margin: 20px auto; }
+.cover-test h3 { font-size: 14px; margin: 0 0 5px; }
+.footer { margin-top: 20px; font-size: 11px; color: #aaa; }
+.result-box { display: inline-block; border: 2px solid #333; padding: 8px 20px; margin: 5px; border-radius: 5px; font-size: 14px; }
+.eye-label { font-weight: bold; }
+@media print {
+  .no-print { display: none; }
+  body { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<h1>🔍 בדיקת ראייה ביתית</h1>
+<p class="subtitle">לוח סנלן (Snellen) — מותאם לילדים מגיל 5+</p>
+
+<div class="instructions">
+<h2>📋 הוראות:</h2>
+1. <strong>הדפס</strong> דף זה על נייר A4<br>
+2. <strong>תלה</strong> על הקיר בגובה העיניים של הילד<br>
+3. <strong>מדוד</strong> 3 מטרים (10 צעדים גדולים) מהלוח<br>
+4. <strong>כסה</strong> עין אחת עם כף יד (בלי ללחוץ!)<br>
+5. <strong>בקש</strong> מהילד לקרוא את האותיות מלמעלה למטה<br>
+6. <strong>חזור</strong> עם העין השנייה<br>
+7. <strong>רשום</strong> את השורה הקטנה ביותר שהילד קורא נכון<br>
+</div>
+
+<div class="divider"></div>
+
+<div class="row"><span class="label">20/200</span><span class="letters size-1">E</span></div>
+<div class="row"><span class="label">20/100</span><span class="letters size-2">F P</span></div>
+<div class="row"><span class="label">20/70</span><span class="letters size-3">T O Z</span></div>
+<div class="row"><span class="label">20/50</span><span class="letters size-4">L P E D</span></div>
+<div class="row"><span class="label">20/40</span><span class="letters size-5">P E C F D</span></div>
+<div class="row"><span class="label">20/30</span><span class="letters size-6">E D F C Z P</span></div>
+<div class="row"><span class="label">20/25</span><span class="letters size-7">F E L O P Z D</span></div>
+<div class="row"><span class="label">20/20</span><span class="letters size-8">D E F P O T E C</span></div>
+<div class="row"><span class="label">20/15</span><span class="letters size-9">L E F O D P C T</span></div>
+<div class="row"><span class="label">20/10</span><span class="letters size-10">F D P L T C E O</span></div>
+
+<div class="divider"></div>
+
+<div class="cover-test">
+<h3>📝 תוצאות:</h3>
+<div class="result-box"><span class="eye-label">עין ימין:</span> 20/____</div>
+<div class="result-box"><span class="eye-label">עין שמאל:</span> 20/____</div>
+<br><br>
+<span style="font-size:12px">
+✅ <strong>20/20</strong> = ראייה תקינה<br>
+⚠️ <strong>20/40 או יותר</strong> = מומלץ לפנות לאופטומטריסט<br>
+❌ <strong>הבדל גדול בין העיניים</strong> = חשוב לבדוק!
+</span>
+</div>
+
+<div class="footer">
+⚠️ בדיקה ביתית אינה מחליפה בדיקת רופא עיניים מקצועית.<br>
+אם יש חשד לבעיית ראייה — פנו לאופטומטריסט.
+</div>
+
+</body>
+</html>

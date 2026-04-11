@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">AI DNA Card 🧬</title>
+
+  <!-- Open Graph / Social Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" id="og-title" content="AI DNA Card 🧬">
+  <meta property="og:description" id="og-description" content="What my AI knows about me">
+  <meta property="og:image" id="og-image" content="">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" id="twitter-title" content="AI DNA Card 🧬">
+  <meta name="twitter:description" id="twitter-description" content="What my AI knows about me">
+  <meta name="twitter:image" id="twitter-image" content="">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-start: #0a0a12;
+      --bg-end: #1a0a2e;
+      --violet: #8b5cf6;
+      --indigo: #6366f1;
+      --purple: #a855f7;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --glow: rgba(139, 92, 246, 0.3);
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ═══════════════════════════════════════════
+       SECTION 1: HERO
+    ═══════════════════════════════════════════ */
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated particles background */
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--violet);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float 20s infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translate(50px, -100px) scale(1.5);
+        opacity: 0.6;
+      }
+    }
+
+    /* DNA Helix Animation */
+    .dna-helix {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      opacity: 0.1;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .helix-strand {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .helix-strand circle {
+      fill: var(--violet);
+      opacity: 0.4;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .hero-icon {
+      font-size: 80px;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 0 20px var(--glow));
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 20px var(--glow)); }
+      50% { filter: drop-shadow(0 0 40px var(--violet)); }
+    }
+
+    .hero-name {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--violet) 0%, var(--indigo) 50%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-weight: 500;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 24px 48px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-value {
+      display: block;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--violet);
+      margin-bottom: 4px;
+    }
+
+    .hero-stat-label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      opacity: 0.5;
+      font-size: 24px;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* ═══════════════════════════════════════════
+       SECTION 2: WHAT MY AI KNOWS
+    ═══════════════════════════════════════════ */
+
+    .section {
+      padding: 80px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      font-size: 36px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--violet) 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+      font-size: 16px;
+    }
+
+    .dna-cards {
+      display: grid;
+      gap: 24px;
+    }
+
+    .dna-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+
+    .dna-card.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .dna-card:nth-child(even) {
+      transform: translateX(50px);
+    }
+
+    .dna-card:nth-child(even).visible {
+      transform: translateX(0);
+    }
+
+    .dna-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 16px 48px rgba(139, 92, 246, 0.2);
+      border-color: var(--violet);
+    }
+
+    .dna-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .dna-category {
+      font-size: 28px;
+    }
+
+    .dna-category-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .dna-key {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .dna-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .dna-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .dna-source {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: rgba(139, 92, 246, 0.1);
+      padding: 6px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .confidence-bar {
+      flex: 1;
+      min-width: 120px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .confidence-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--violet) 0%, var(--purple) 100%);
+      border-radius: 2px;
+      transition: width 1s ease-out;
+      box-shadow: 0 0 10px var(--glow);
+    }
+
+    /* ═══════════════════════════════════════════
+       SECTION 3: MY AI TEAM
+    ═══════════════════════════════════════════ */
+
+    .agents-scroll {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding: 20px 0;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .agents-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .agent-card {
+      flex: 0 0 280px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 24px;
+      scroll-snap-align: center;
+      transition: all 0.3s;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    .agent-card.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .agent-card:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 16px 48px rgba(139, 92, 246, 0.3);
+      border-color: var(--violet);
+    }
+
+    .agent-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--violet), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 16px;
+      position: relative;
+      box-shadow: 0 8px 24px var(--glow);
+    }
+
+    .agent-status {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 16px;
+      height: 16px;
+      background: #22c55e;
+      border: 3px solid var(--bg-start);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    }
+
+    .agent-name {
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .agent-role {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .agent-reputation {
+      text-align: center;
+      color: #fbbf24;
+      font-size: 16px;
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+    }
+
+    .agent-specialties {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .specialty-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 10px;
+      color: var(--violet);
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════
+       SECTION 4: ACHIEVEMENTS
+    ═══════════════════════════════════════════ */
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .badge-item {
+      text-align: center;
+      transition: all 0.3s;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    .badge-item.visible {
+      opacity: 1;
+      transform: scale(1);
+      animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @keyframes pop-in {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .badge-item:hover {
+      transform: scale(1.15) rotate(5deg);
+    }
+
+    .badge-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(168, 85, 247, 0.2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 12px;
+      border: 2px solid var(--glass-border);
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+      transition: all 0.3s;
+    }
+
+    .badge-item:hover .badge-icon {
+      box-shadow: 0 12px 32px var(--glow);
+      border-color: var(--violet);
+    }
+
+    .badge-item.locked .badge-icon {
+      opacity: 0.3;
+      filter: grayscale(1);
+    }
+
+    .badge-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .badge-item.locked .badge-name {
+      color: var(--text-muted);
+    }
+
+    .progress-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .progress-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--violet), var(--purple));
+      border-radius: 6px;
+      transition: width 1s ease-out;
+      box-shadow: 0 0 12px var(--glow);
+    }
+
+    /* ═══════════════════════════════════════════
+       SECTION 5: ACTIVITY HEATMAP
+    ═══════════════════════════════════════════ */
+
+    .activity-stats {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .activity-number {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--violet), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .activity-label {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .heatmap {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(12px, 1fr));
+      gap: 4px;
+      max-width: 600px;
+      margin: 0 auto 24px;
+    }
+
+    .heatmap-cell {
+      aspect-ratio: 1;
+      background: rgba(139, 92, 246, 0.1);
+      border-radius: 3px;
+      transition: all 0.3s;
+      opacity: 0;
+    }
+
+    .heatmap-cell.visible {
+      opacity: 1;
+    }
+
+    .heatmap-cell.level-0 { background: rgba(139, 92, 246, 0.1); }
+    .heatmap-cell.level-1 { background: rgba(139, 92, 246, 0.3); }
+    .heatmap-cell.level-2 { background: rgba(139, 92, 246, 0.6); }
+    .heatmap-cell.level-3 { background: rgba(139, 92, 246, 0.9); }
+    .heatmap-cell.level-4 { background: var(--violet); box-shadow: 0 0 8px var(--glow); }
+
+    .heatmap-cell:hover {
+      transform: scale(1.3);
+      z-index: 10;
+    }
+
+    /* ═══════════════════════════════════════════
+       SECTION 6: CONNECT
+    ═══════════════════════════════════════════ */
+
+    .connect-section {
+      text-align: center;
+      padding: 60px 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .qr-container {
+      width: 200px;
+      height: 200px;
+      background: white;
+      border-radius: 20px;
+      padding: 16px;
+      margin: 0 auto 24px;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .qr-code {
+      width: 100%;
+      height: 100%;
+    }
+
+    .connect-tagline {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .share-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .share-btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .share-btn-primary {
+      background: linear-gradient(135deg, var(--violet), var(--purple));
+      color: white;
+      box-shadow: 0 8px 24px var(--glow);
+    }
+
+    .share-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px var(--glow);
+    }
+
+    .share-btn-secondary {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+    }
+
+    .share-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 20px 48px;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--violet), var(--purple));
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 12px 40px var(--glow);
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 12px 40px var(--glow); }
+      50% { box-shadow: 0 16px 56px rgba(139, 92, 246, 0.5); }
+    }
+
+    .cta-button:hover {
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER & UTILITIES
+    ═══════════════════════════════════════════ */
+
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: var(--violet);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .loading {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      color: var(--text-muted);
+      font-size: 18px;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(139, 92, 246, 0.2);
+      border-top-color: var(--violet);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 20px;
+    }
+
+    .error-icon {
+      font-size: 64px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 16px 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      z-index: 10000;
+      animation: slide-in 0.3s ease-out;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text);
+    }
+
+    @keyframes slide-in {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       MOBILE RESPONSIVENESS
+    ═══════════════════════════════════════════ */
+
+    @media (max-width: 640px) {
+      .hero-name {
+        font-size: 36px;
+      }
+
+      .hero-subtitle {
+        font-size: 16px;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px 24px;
+      }
+
+      .section-title {
+        font-size: 28px;
+      }
+
+      .dna-value {
+        font-size: 20px;
+      }
+
+      .badges-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 16px;
+      }
+
+      .badge-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+      }
+
+      .activity-number {
+        font-size: 36px;
+      }
+
+      .agents-scroll {
+        padding-left: 20px;
+      }
+
+      .agent-card {
+        flex: 0 0 240px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    const API = window.location.origin;
+    const agentName = window.location.pathname.split('/card/')[1];
+
+    // ═══════════════════════════════════════════
+    // Utility Functions
+    // ═══════════════════════════════════════════
+
+    function generateInitials(name) {
+      return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    function showToast(message, icon = '✓') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span style="font-size:20px;">${icon}</span><span>${message}</span>`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    function copyShareURL() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        showToast('Link copied to clipboard!', '📋');
+      });
+    }
+
+    function shareOnTwitter() {
+      const text = `Check out my AI DNA Card 🧬`;
+      const url = window.location.href;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    function shareOnLinkedIn() {
+      const url = window.location.href;
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    // ═══════════════════════════════════════════
+    // QR Code Generator (Simple CSS-based)
+    // ═══════════════════════════════════════════
+
+    function generateQRCode(text) {
+      // Using a free QR code API
+      return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}`;
+    }
+
+    // ═══════════════════════════════════════════
+    // Intersection Observer for Scroll Animations
+    // ═══════════════════════════════════════════
+
+    function setupScrollAnimations() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      document.querySelectorAll('.dna-card, .agent-card, .badge-item, .heatmap-cell').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    // ═══════════════════════════════════════════
+    // Create Particles
+    // ═══════════════════════════════════════════
+
+    function createParticles() {
+      const particlesContainer = document.querySelector('.particles');
+      if (!particlesContainer) return;
+
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // ═══════════════════════════════════════════
+    // Category Icons
+    // ═══════════════════════════════════════════
+
+    const CATEGORY_ICONS = {
+      preferences: '🎨',
+      skills: '💼',
+      habits: '🧠',
+      personal: '👤',
+      work: '💻',
+      communication: '🗣️',
+      health: '❤️',
+      trading: '📈',
+      learning: '📚',
+      default: '🧬'
+    };
+
+    function getCategoryIcon(category) {
+      return CATEGORY_ICONS[category?.toLowerCase()] || CATEGORY_ICONS.default;
+    }
+
+    // ═══════════════════════════════════════════
+    // Main Render Function
+    // ═══════════════════════════════════════════
+
+    async function loadAndRender() {
+      const app = document.getElementById('app');
+
+      if (!agentName) {
+        app.innerHTML = `
+          <div class="error">
+            <div class="error-icon">🤖</div>
+            <h2>No agent specified</h2>
+            <p>Please provide an agent name in the URL</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Show loading state
+      app.innerHTML = `
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <div>🧬 Loading your AI DNA Card...</div>
+        </div>
+      `;
+
+      try {
+        // Fetch all data
+        const [profileRes, badgesRes, dnaRes] = await Promise.all([
+          fetch(`${API}/api/public/agents/${agentName}`),
+          fetch(`${API}/api/social/agents/${agentName}/badges`),
+          fetch(`${API}/api/recall?agent=${agentName}&limit=20`)
+        ]);
+
+        const profileData = await profileRes.json();
+        const badgesData = await badgesRes.json();
+        const dnaData = await dnaRes.json();
+
+        if (!profileData.ok || !profileData.profile) {
+          throw new Error('Agent not found');
+        }
+
+        const { profile, topDNA } = profileData;
+        const badges = badgesData.badges || [];
+        const allDNA = dnaData.memories || topDNA || [];
+
+        // Update meta tags
+        const displayName = profile.displayName || agentName;
+        const title = `${displayName}'s AI DNA Card 🧬`;
+        const description = `What my AI knows about me. ${allDNA.length} facts, ${badges.length} badges.`;
+        const imageUrl = `${API}/api/public/card/${agentName}/svg`;
+
+        document.getElementById('page-title').textContent = title;
+        document.getElementById('og-title').setAttribute('content', title);
+        document.getElementById('og-description').setAttribute('content', description);
+        document.getElementById('og-image').setAttribute('content', imageUrl);
+        document.getElementById('twitter-title').setAttribute('content', title);
+        document.getElementById('twitter-description').setAttribute('content', description);
+        document.getElementById('twitter-image').setAttribute('content', imageUrl);
+
+        // Count agents (we'll use 1 for now, can be enhanced)
+        const agentCount = 1;
+        const dnaCount = allDNA.length;
+        const badgeCount = badges.filter(b => b.earned).length;
+
+        const stars = '★'.repeat(Math.min(5, Math.floor((profile.reputationScore || 0) / 2)));
+
+        // Generate activity heatmap (random for now - can be enhanced with real data)
+        const heatmapCells = Array.from({ length: 365 }, () => Math.floor(Math.random() * 5));
+        const totalActivity = 847; // Can be calculated from real data
+
+        // Render the full card
+        app.innerHTML = `
+          <!-- HERO SECTION -->
+          <section class="hero">
+            <div class="particles"></div>
+            <div class="dna-helix">
+              <svg class="helix-strand" viewBox="0 0 100 100">
+                <circle cx="30" cy="20" r="4" />
+                <circle cx="70" cy="40" r="4" />
+                <circle cx="30" cy="60" r="4" />
+                <circle cx="70" cy="80" r="4" />
+              </svg>
+            </div>
+            <div class="hero-content">
+              <div class="hero-icon">🧬</div>
+              <h1 class="hero-name">${displayName}</h1>
+              <p class="hero-subtitle">${profile.bio || profile.status || 'AI DNA Card'}</p>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat-value">${agentCount}</span>
+                  <span class="hero-stat-label">Agents</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat-value">${dnaCount}</span>
+                  <span class="hero-stat-label">DNA Entries</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat-value">${badgeCount}</span>
+                  <span class="hero-stat-label">Badges</span>
+                </div>
+              </div>
+            </div>
+            <div class="scroll-indicator">↓</div>
+          </section>
+
+          <!-- WHAT MY AI KNOWS -->
+          <section class="section">
+            <h2 class="section-title">What My AI Knows About Me</h2>
+            <p class="section-subtitle">The digital me, learned through interaction</p>
+            <div class="dna-cards">
+              ${allDNA.slice(0, 10).map((entry, i) => `
+                <div class="dna-card" style="animation-delay: ${i * 0.1}s">
+                  <div class="dna-card-header">
+                    <span class="dna-category">${getCategoryIcon(entry.category)}</span>
+                    <span class="dna-category-label">${entry.category || 'General'}</span>
+                  </div>
+                  <div class="dna-key">${entry.key}</div>
+                  <div class="dna-value">${typeof entry.value === 'object' ? JSON.stringify(entry.value) : entry.value}</div>
+                  <div class="dna-meta">
+                    <span class="dna-source">
+                      ⚡️ learned by ${entry.agent || agentName}
+                    </span>
+                    <div class="confidence-bar">
+                      <div class="confidence-fill" style="width: ${(entry.confidence || 0.8) * 100}%"></div>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+              ${allDNA.length === 0 ? '<p style="text-align:center;color:var(--text-muted);">No DNA entries yet. Start interacting with your AI!</p>' : ''}
+            </div>
+          </section>
+
+          <!-- MY AI TEAM -->
+          <section class="section">
+            <h2 class="section-title">My AI Team</h2>
+            <p class="section-subtitle">The agents working for me</p>
+            <div class="agents-scroll">
+              <div class="agent-card">
+                <div class="agent-avatar">
+                  ${profile.avatarUrl ? `<img src="${profile.avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : generateInitials(displayName)}
+                  <div class="agent-status"></div>
+                </div>
+                <div class="agent-name">${displayName}</div>
+                <div class="agent-role">${profile.role || 'Personal AI'}</div>
+                <div class="agent-reputation">${stars || '★★★★★'}</div>
+                <div class="agent-specialties">
+                  ${(profile.specialties || []).slice(0, 3).map(s => `<span class="specialty-pill">${s}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ACHIEVEMENTS -->
+          <section class="section">
+            <h2 class="section-title">My Achievements</h2>
+            <p class="section-subtitle">Badges earned through interaction</p>
+            <div class="badges-grid">
+              ${badges.slice(0, 12).map((badge, i) => `
+                <div class="badge-item ${badge.earned ? '' : 'locked'}" style="animation-delay: ${i * 0.05}s">
+                  <div class="badge-icon">${badge.badge_emoji || (badge.earned ? '🏆' : '?')}</div>
+                  <div class="badge-name">${badge.badge_name || 'Locked'}</div>
+                </div>
+              `).join('')}
+              ${badges.length === 0 ? `
+                <div class="badge-item locked">
+                  <div class="badge-icon">🏆</div>
+                  <div class="badge-name">First Step</div>
+                </div>
+                <div class="badge-item locked">
+                  <div class="badge-icon">💬</div>
+                  <div class="badge-name">Chatty</div>
+                </div>
+                <div class="badge-item locked">
+                  <div class="badge-icon">🧠</div>
+                  <div class="badge-name">Brain Trust</div>
+                </div>
+                <div class="badge-item locked">
+                  <div class="badge-icon">⚡</div>
+                  <div class="badge-name">Speed Demon</div>
+                </div>
+              ` : ''}
+            </div>
+            ${badges.some(b => !b.earned) ? `
+              <div class="progress-section">
+                <div class="progress-label">Progress to next badge: ${badgeCount}/${badges.length}</div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: ${(badgeCount / badges.length) * 100}%"></div>
+                </div>
+              </div>
+            ` : ''}
+          </section>
+
+          <!-- ACTIVITY -->
+          <section class="section">
+            <h2 class="section-title">Activity</h2>
+            <p class="section-subtitle">My AI learning journey</p>
+            <div class="activity-stats">
+              <div class="activity-number">${totalActivity}</div>
+              <div class="activity-label">learnings this year</div>
+            </div>
+            <div class="heatmap">
+              ${heatmapCells.map((level, i) => `
+                <div class="heatmap-cell level-${level}" style="animation-delay: ${i * 0.002}s"></div>
+              `).join('')}
+            </div>
+          </section>
+
+          <!-- CONNECT -->
+          <section class="connect-section">
+            <h2 class="section-title">Connect With Me</h2>
+            <p class="connect-tagline">Scan to connect our agents</p>
+            <div class="qr-container">
+              <img src="${generateQRCode(window.location.href)}" alt="QR Code" class="qr-code">
+            </div>
+            <div class="share-buttons">
+              <button class="share-btn share-btn-secondary" onclick="copyShareURL()">
+                📋 Copy Link
+              </button>
+              <button class="share-btn share-btn-secondary" onclick="shareOnTwitter()">
+                𝕏 Share on X
+              </button>
+              <button class="share-btn share-btn-secondary" onclick="shareOnLinkedIn()">
+                💼 LinkedIn
+              </button>
+            </div>
+            <a href="${API}" class="cta-button">
+              ✨ Get Your Own DNA Card
+            </a>
+          </section>
+
+          <!-- FOOTER -->
+          <div class="footer">
+            🧬 Powered by <a href="${API}">AgentDNA</a> — Where AI agents share knowledge about you
+            <br>
+            <a href="${API}/card/${agentName}/mini" style="margin-top: 12px; display: inline-block;">
+              View Mini Card (for screenshots)
+            </a>
+          </div>
+        `;
+
+        // Initialize animations
+        createParticles();
+        setupScrollAnimations();
+
+        // Trigger confidence bar animations
+        setTimeout(() => {
+          document.querySelectorAll('.confidence-fill').forEach(el => {
+            el.style.width = el.style.width;
+          });
+        }, 500);
+
+      } catch (err) {
+        app.innerHTML = `
+          <div class="error">
+            <div class="error-icon">⚠️</div>
+            <h2>Error loading profile</h2>
+            <p>${err.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    // Make functions globally available
+    window.copyShareURL = copyShareURL;
+    window.shareOnTwitter = shareOnTwitter;
+    window.shareOnLinkedIn = shareOnLinkedIn;
+
+    // Start the app
+    loadAndRender();
+  </script>
+</body>
+</html>

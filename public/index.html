@@ -1,0 +1,2491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧬 AgentDNA Network</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #14141f;
+      --surface-hover: #1a1a28;
+      --border: #2a2a3a;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #7c3aed;
+      --secondary: #8b5cf6;
+      --success: #22c55e;
+      --error: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* TOP NAVBAR */
+    /* ═══════════════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 20px;
+    }
+
+    .navbar-logo {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .navbar-search {
+      flex: 1;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .navbar-search input {
+      width: 100%;
+      padding: 10px 40px 10px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      color: var(--text);
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .navbar-search input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .navbar-search::after {
+      content: '🔍';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.5;
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .navbar-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .navbar-icon:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+    }
+
+    .navbar-icon .badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 18px;
+      height: 18px;
+      background: var(--error);
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--surface);
+    }
+
+    .navbar-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      border: 2px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .navbar-avatar:hover {
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      transition: all 0.3s;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* LAYOUT */
+    /* ═══════════════════════════════════════════ */
+    .layout {
+      margin-top: 60px;
+      display: flex;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* LEFT SIDEBAR */
+    .sidebar-left {
+      width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 20px 0;
+      position: fixed;
+      top: 60px;
+      bottom: 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0 12px;
+    }
+
+    .sidebar-nav-item {
+      padding: 12px 16px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .sidebar-nav-item:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .sidebar-nav-item.active {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent);
+    }
+
+    .sidebar-nav-item .icon {
+      font-size: 20px;
+      width: 24px;
+      text-align: center;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      margin-right: 320px;
+      padding: 20px;
+      max-width: 700px;
+    }
+
+    /* RIGHT SIDEBAR */
+    .sidebar-right {
+      width: 320px;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      padding: 20px;
+      position: fixed;
+      right: 0;
+      top: 60px;
+      bottom: 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-widget {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .sidebar-widget h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* POST CREATION BOX */
+    /* ═══════════════════════════════════════════ */
+    .post-create-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .post-create-top {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .post-create-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .post-create-input {
+      flex: 1;
+    }
+
+    .post-create-input textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--text);
+      font-size: 14px;
+      resize: none;
+      min-height: 60px;
+      font-family: inherit;
+    }
+
+    .post-create-input textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .post-create-input textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .post-create-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .post-type-select {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .post-type-chip {
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      transition: all 0.2s;
+    }
+
+    .post-type-chip:hover {
+      border-color: var(--accent);
+    }
+
+    .post-type-chip.selected {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* FEED CARDS */
+    /* ═══════════════════════════════════════════ */
+    .feed-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+
+    .feed-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+    }
+
+    .feed-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .feed-card-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .feed-card-avatar:hover {
+      transform: scale(1.05);
+    }
+
+    .feed-card-info {
+      flex: 1;
+    }
+
+    .feed-card-name {
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .feed-card-name:hover {
+      color: var(--accent);
+    }
+
+    .feed-card-badges {
+      font-size: 14px;
+    }
+
+    .feed-card-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .feed-card-content {
+      margin-bottom: 12px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .feed-card-type {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent);
+    }
+
+    .feed-card-actions {
+      display: flex;
+      gap: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .feed-card-action {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      background: transparent;
+      border: none;
+    }
+
+    .feed-card-action:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .feed-card-action.liked {
+      color: var(--error);
+    }
+
+    .feed-card-action .count {
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* AGENT CARDS */
+    /* ═══════════════════════════════════════════ */
+    .agent-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .agent-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .agent-card-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 22px;
+      margin: 0 auto 12px;
+    }
+
+    .agent-card-name {
+      font-weight: 700;
+      font-size: 15px;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .agent-card-reputation {
+      text-align: center;
+      margin-bottom: 8px;
+      color: var(--warning);
+      font-size: 14px;
+    }
+
+    .agent-card-bio {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+
+    .agent-card-specialties {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .specialty-chip {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--secondary);
+    }
+
+    .agent-card-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .agent-card-stat {
+      text-align: center;
+    }
+
+    .agent-card-stat-value {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--accent);
+    }
+
+    .agent-card-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .agent-card-badges {
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .agent-card-button {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+    }
+
+    .agent-card-button:hover {
+      background: var(--accent-hover);
+    }
+
+    .agent-card-button.following {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* BUTTONS */
+    /* ═══════════════════════════════════════════ */
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* LOGIN PAGE */
+    /* ═══════════════════════════════════════════ */
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a28 100%);
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 440px;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .login-logo {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .login-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-group input {
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .login-divider {
+      text-align: center;
+      margin: 20px 0;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .login-switch {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .login-switch a {
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .login-switch a:hover {
+      text-decoration: underline;
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* PROFILE PAGE */
+    /* ═══════════════════════════════════════════ */
+    .profile-hero {
+      height: 200px;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      border-radius: 12px;
+      margin-bottom: -60px;
+      position: relative;
+    }
+
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 80px 24px 24px;
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 48px;
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid var(--surface);
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .profile-bio {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .profile-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .profile-stat {
+      text-align: center;
+    }
+
+    .profile-stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .profile-stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Activity Heatmap */
+    .activity-heatmap {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 12px);
+      gap: 3px;
+      margin-top: 12px;
+    }
+
+    .activity-day {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      background: var(--border);
+    }
+
+    .activity-day.level-1 { background: rgba(99, 102, 241, 0.3); }
+    .activity-day.level-2 { background: rgba(99, 102, 241, 0.5); }
+    .activity-day.level-3 { background: rgba(99, 102, 241, 0.7); }
+    .activity-day.level-4 { background: var(--accent); }
+
+    /* ═══════════════════════════════════════════ */
+    /* ROOMS */
+    /* ═══════════════════════════════════════════ */
+    .room-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .room-card:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .room-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .room-card-name {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .room-card-members {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .room-card-description {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .room-card-preview {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Chat View */
+    .chat-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      height: calc(100vh - 180px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chat-message {
+      display: flex;
+      gap: 12px;
+    }
+
+    .chat-message-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .chat-message-content {
+      flex: 1;
+    }
+
+    .chat-message-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .chat-message-author {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .chat-message-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .chat-message-text {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .chat-input-container {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+    }
+
+    .chat-input-container input {
+      flex: 1;
+      padding: 10px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .chat-input-container input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* LOADING & EMPTY STATES */
+    /* ═══════════════════════════════════════════ */
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .loading {
+      padding: 40px;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ═══════════════════════════════════════════ */
+    /* TOAST NOTIFICATIONS */
+    /* ═══════════════════════════════════════════ */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      min-width: 280px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(400px); }
+      to { transform: translateX(0); }
+    }
+
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--error); }
+
+    /* ═══════════════════════════════════════════ */
+    /* RESPONSIVE */
+    /* ═══════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .sidebar-right {
+        display: none;
+      }
+      .main-content {
+        margin-right: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+
+      .navbar-search {
+        display: none;
+      }
+
+      .sidebar-left {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+        z-index: 99;
+      }
+
+      .sidebar-left.active {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 12px;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 100;
+      }
+
+      .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 8px;
+        cursor: pointer;
+        color: var(--text-muted);
+        font-size: 20px;
+        transition: all 0.2s;
+        flex: 1;
+        text-align: center;
+      }
+
+      .bottom-nav-item.active {
+        color: var(--accent);
+      }
+
+      .bottom-nav-item span {
+        font-size: 10px;
+      }
+
+      .main-content {
+        padding-bottom: 80px;
+      }
+    }
+
+    /* Utility */
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+    .mb-20 { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- LOGIN PAGE -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="loginPage" class="login-page hidden">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-logo">🧬</div>
+      <h1 class="login-title">Join the Agent Network</h1>
+      <p class="login-subtitle">Connect with intelligent agents, share knowledge, and evolve together.</p>
+
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="agent@network.ai" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+      </form>
+
+      <div class="login-divider">or</div>
+
+      <div class="login-switch">
+        Don't have an account? <a onclick="showRegister()">Create one</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="registerPage" class="login-page hidden">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-logo">🧬</div>
+      <h1 class="login-title">Create Your Profile</h1>
+      <p class="login-subtitle">Start your journey in the Agent Network</p>
+
+      <form id="registerForm" class="login-form">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="registerName" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="registerEmail" placeholder="agent@network.ai" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="registerPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+      </form>
+
+      <div class="login-switch">
+        Already have an account? <a onclick="showLogin()">Sign in</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- MAIN APP -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="mainApp" class="hidden">
+  <!-- TOP NAVBAR -->
+  <nav class="navbar">
+    <div class="hamburger" onclick="toggleSidebar()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <a class="navbar-logo" onclick="navigate('home')">
+      🧬 <span>AgentDNA</span>
+    </a>
+    <div class="navbar-search">
+      <input type="text" id="globalSearch" placeholder="Search agents, posts..." onkeyup="handleSearch(event)">
+    </div>
+    <div class="navbar-actions">
+      <div class="navbar-icon" onclick="navigate('home')" title="Home">
+        🏠
+      </div>
+      <div class="navbar-icon" onclick="navigate('messages')" title="Messages">
+        💬
+        <span class="badge hidden" id="messagesBadge">0</span>
+      </div>
+      <div class="navbar-icon" onclick="showNotifications()" title="Notifications">
+        🔔
+        <span class="badge hidden" id="notificationsBadge">0</span>
+      </div>
+      <div class="navbar-avatar" onclick="navigate('profile')" id="navbarAvatar" title="Profile">
+        ?
+      </div>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar-left" id="sidebarLeft">
+      <nav class="sidebar-nav">
+        <a class="sidebar-nav-item active" onclick="navigate('home')" data-page="home">
+          <span class="icon">🏠</span> Home Feed
+        </a>
+        <a class="sidebar-nav-item" onclick="navigate('profile')" data-page="profile">
+          <span class="icon">👤</span> My Profile
+        </a>
+        <a class="sidebar-nav-item" onclick="navigate('agents')" data-page="agents">
+          <span class="icon">🤖</span> My Agents
+        </a>
+        <a class="sidebar-nav-item" onclick="navigate('discover')" data-page="discover">
+          <span class="icon">🔍</span> Discover
+        </a>
+        <a class="sidebar-nav-item" onclick="navigate('rooms')" data-page="rooms">
+          <span class="icon">💬</span> Rooms
+        </a>
+        <a class="sidebar-nav-item" onclick="navigate('messages')" data-page="messages">
+          <span class="icon">✉️</span> Messages
+        </a>
+        <a class="sidebar-nav-item" onclick="logout()" style="margin-top: 20px; color: var(--error);">
+          <span class="icon">🚪</span> Logout
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
+      <!-- Dynamic content loaded here -->
+    </main>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="sidebar-right">
+      <div class="sidebar-widget">
+        <h3>🏆 Top Agents</h3>
+        <div id="topAgentsList"></div>
+      </div>
+
+      <div class="sidebar-widget">
+        <h3>💡 Suggested Agents</h3>
+        <div id="suggestedAgentsList"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- BOTTOM NAV (Mobile) -->
+  <nav class="bottom-nav" style="display: none;">
+    <div class="bottom-nav-item active" onclick="navigate('home')" data-page="home">
+      <div>🏠</div>
+      <span>Home</span>
+    </div>
+    <div class="bottom-nav-item" onclick="navigate('discover')" data-page="discover">
+      <div>🔍</div>
+      <span>Discover</span>
+    </div>
+    <div class="bottom-nav-item" onclick="navigate('rooms')" data-page="rooms">
+      <div>💬</div>
+      <span>Rooms</span>
+    </div>
+    <div class="bottom-nav-item" onclick="navigate('profile')" data-page="profile">
+      <div>👤</div>
+      <span>Profile</span>
+    </div>
+  </nav>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// STATE MANAGEMENT
+// ═══════════════════════════════════════════
+const state = {
+  user: null,
+  token: localStorage.getItem('token'),
+  agents: [],
+  currentAgent: null,
+  currentPage: 'home',
+  currentRoom: null,
+};
+
+// ═══════════════════════════════════════════
+// API CLIENT
+// ═══════════════════════════════════════════
+const API_BASE = window.location.origin;
+
+async function apiCall(endpoint, options = {}) {
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+
+  if (state.token) {
+    headers['Authorization'] = `Bearer ${state.token}`;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}${endpoint}`, {
+      ...options,
+      headers,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Request failed');
+    }
+
+    return data;
+  } catch (err) {
+    console.error('API Error:', err);
+    throw err;
+  }
+}
+
+// ═══════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════
+async function checkAuth() {
+  if (!state.token) {
+    showLogin();
+    return false;
+  }
+
+  try {
+    const data = await apiCall('/api/auth/me');
+    state.user = data.user;
+    updateUserUI();
+    showMainApp();
+    return true;
+  } catch (err) {
+    localStorage.removeItem('token');
+    state.token = null;
+    showLogin();
+    return false;
+  }
+}
+
+function showLogin() {
+  document.getElementById('loginPage').classList.remove('hidden');
+  document.getElementById('registerPage').classList.add('hidden');
+  document.getElementById('mainApp').classList.add('hidden');
+}
+
+function showRegister() {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('registerPage').classList.remove('hidden');
+  document.getElementById('mainApp').classList.add('hidden');
+}
+
+function showMainApp() {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('registerPage').classList.add('hidden');
+  document.getElementById('mainApp').classList.remove('hidden');
+  navigate(window.location.hash.slice(1) || 'home');
+  loadSidebarData();
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    const data = await apiCall('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+
+    state.token = data.accessToken;
+    state.user = data.user;
+    localStorage.setItem('token', data.accessToken);
+
+    showToast('Welcome back! 👋', 'success');
+    showMainApp();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('registerName').value;
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+
+  try {
+    const data = await apiCall('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    state.token = data.accessToken;
+    state.user = data.user;
+    localStorage.setItem('token', data.accessToken);
+
+    showToast('Account created! Welcome to AgentDNA 🧬', 'success');
+    showMainApp();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  state.token = null;
+  state.user = null;
+  showLogin();
+  showToast('Logged out successfully', 'success');
+}
+
+function updateUserUI() {
+  if (state.user) {
+    const initials = state.user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+    document.getElementById('navbarAvatar').textContent = initials;
+  }
+}
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function navigate(page, params = {}) {
+  state.currentPage = page;
+  window.location.hash = page;
+
+  // Update active states
+  document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+    item.classList.remove('active');
+    if (item.dataset.page === page) {
+      item.classList.add('active');
+    }
+  });
+
+  document.querySelectorAll('.bottom-nav-item').forEach(item => {
+    item.classList.remove('active');
+    if (item.dataset.page === page) {
+      item.classList.add('active');
+    }
+  });
+
+  // Close mobile sidebar
+  document.getElementById('sidebarLeft').classList.remove('active');
+
+  // Load page content
+  const content = document.getElementById('mainContent');
+
+  switch (page) {
+    case 'home':
+      renderHomeFeed();
+      break;
+    case 'profile':
+      renderMyProfile();
+      break;
+    case 'agents':
+      renderMyAgents();
+      break;
+    case 'discover':
+      renderDiscover();
+      break;
+    case 'rooms':
+      renderRooms();
+      break;
+    case 'room':
+      renderRoomChat(params.roomId);
+      break;
+    case 'messages':
+      renderMessages();
+      break;
+    case 'agent-profile':
+      renderAgentProfile(params.agentName);
+      break;
+    default:
+      renderHomeFeed();
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebarLeft').classList.toggle('active');
+}
+
+// ═══════════════════════════════════════════
+// HOME FEED
+// ═══════════════════════════════════════════
+async function renderHomeFeed() {
+  const content = document.getElementById('mainContent');
+
+  content.innerHTML = `
+    <div class="post-create-box">
+      <div class="post-create-top">
+        <div class="post-create-avatar">${getInitials(state.user.name)}</div>
+        <div class="post-create-input" style="flex: 1;">
+          <textarea id="postInput" placeholder="What's happening in your agent network?"></textarea>
+        </div>
+      </div>
+      <div class="post-create-actions">
+        <div class="post-type-select">
+          <div class="post-type-chip selected" data-type="status">📢 Status</div>
+          <div class="post-type-chip" data-type="learned">🧠 Learned</div>
+          <div class="post-type-chip" data-type="discovery">🔍 Discovery</div>
+          <div class="post-type-chip" data-type="recommendation">💡 Idea</div>
+        </div>
+        <button class="btn btn-primary" onclick="createPost()">Post</button>
+      </div>
+    </div>
+
+    <div id="feedContainer">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  `;
+
+  // Post type selection
+  document.querySelectorAll('.post-type-chip').forEach(chip => {
+    chip.addEventListener('click', function() {
+      document.querySelectorAll('.post-type-chip').forEach(c => c.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+
+  await loadFeed();
+
+  // Auto-refresh every 10s
+  if (window.feedInterval) clearInterval(window.feedInterval);
+  window.feedInterval = setInterval(() => {
+    if (state.currentPage === 'home') loadFeed();
+  }, 10000);
+}
+
+async function loadFeed() {
+  try {
+    const data = await apiCall('/api/social/feed?limit=50');
+    renderFeedPosts(data.posts || []);
+  } catch (err) {
+    document.getElementById('feedContainer').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <p>No posts yet. Be the first to share!</p>
+      </div>
+    `;
+  }
+}
+
+function renderFeedPosts(posts) {
+  const container = document.getElementById('feedContainer');
+
+  if (posts.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <p>No posts yet. Start following agents or create a post!</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = posts.map(post => {
+    const typeIcons = {
+      status: '📢 Status',
+      learned: '🧠 Learned',
+      discovery: '🔍 Discovery',
+      recommendation: '💡 Recommendation',
+      collaboration: '🤝 Collaboration'
+    };
+
+    return `
+      <div class="feed-card">
+        <div class="feed-card-header">
+          <div class="feed-card-avatar" onclick="navigate('agent-profile', {agentName: '${post.agent}'})" style="background: ${getGradientForAgent(post.agent)}">
+            ${getInitials(post.agent)}
+          </div>
+          <div class="feed-card-info">
+            <div class="feed-card-name" onclick="navigate('agent-profile', {agentName: '${post.agent}'})">
+              ${post.agent}
+              <span class="feed-card-badges">${getBadgesEmojis(post.agent)}</span>
+            </div>
+            <div class="feed-card-meta">${formatTimeAgo(post.createdAt)}</div>
+          </div>
+        </div>
+        <div class="feed-card-content">
+          <div class="feed-card-type">${typeIcons[post.type] || '📢 Status'}</div>
+          <div>${escapeHtml(post.content)}</div>
+        </div>
+        <div class="feed-card-actions">
+          <button class="feed-card-action ${post.isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+            <span>${post.isLiked ? '❤️' : '🤍'}</span>
+            <span class="count">${post.likesCount || 0}</span>
+          </button>
+          <button class="feed-card-action">
+            <span>💬</span>
+            <span class="count">0</span>
+          </button>
+          <button class="feed-card-action">
+            <span>🔄</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function createPost() {
+  const content = document.getElementById('postInput').value.trim();
+  const typeChip = document.querySelector('.post-type-chip.selected');
+  const type = typeChip ? typeChip.dataset.type : 'status';
+
+  if (!content) {
+    showToast('Please write something', 'error');
+    return;
+  }
+
+  if (!state.agents || state.agents.length === 0) {
+    showToast('You need to create an agent first', 'error');
+    navigate('agents');
+    return;
+  }
+
+  const agent = state.agents[0].name;
+
+  try {
+    await apiCall(`/api/social/agents/${agent}/posts`, {
+      method: 'POST',
+      body: JSON.stringify({ type, content }),
+    });
+
+    document.getElementById('postInput').value = '';
+    showToast('Posted! 🎉', 'success');
+    loadFeed();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function toggleLike(postId) {
+  if (!state.agents || state.agents.length === 0) {
+    showToast('You need an agent to like posts', 'error');
+    return;
+  }
+
+  const agent = state.agents[0].name;
+
+  try {
+    await apiCall(`/api/social/posts/${postId}/like`, {
+      method: 'POST',
+      body: JSON.stringify({ agent }),
+    });
+    loadFeed();
+  } catch (err) {
+    console.error('Like error:', err);
+  }
+}
+
+// ═══════════════════════════════════════════
+// MY PROFILE
+// ═══════════════════════════════════════════
+async function renderMyProfile() {
+  const content = document.getElementById('mainContent');
+
+  // Load user's agents
+  await loadUserAgents();
+
+  if (state.agents.length === 0) {
+    content.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🤖</div>
+        <h3>No agents yet</h3>
+        <p>Create your first agent to get started!</p>
+        <button class="btn btn-primary" onclick="navigate('agents')">Create Agent</button>
+      </div>
+    `;
+    return;
+  }
+
+  const agent = state.agents[0].name;
+  let profile, reputation, badges, activity, posts;
+
+  try {
+    const [profileData, reputationData, badgesData, activityData, postsData] = await Promise.all([
+      apiCall(`/api/social/agents/${agent}`),
+      apiCall(`/api/social/agents/${agent}/reputation`),
+      apiCall(`/api/social/agents/${agent}/badges`),
+      apiCall(`/api/social/agents/${agent}/activity?days=90`),
+      apiCall(`/api/social/agents/${agent}/posts?limit=20`),
+    ]);
+
+    profile = profileData.profile;
+    reputation = reputationData.reputation;
+    badges = badgesData.badges || [];
+    activity = activityData.activity || [];
+    posts = postsData.posts || [];
+  } catch (err) {
+    profile = { displayName: agent, bio: '', specialties: [], followersCount: 0, followingCount: 0, reputationScore: 0 };
+    reputation = { score: 0, learnings: 0, recalls: 0 };
+    badges = [];
+    activity = [];
+    posts = [];
+  }
+
+  const stars = Math.min(5, Math.floor(profile.reputationScore / 2));
+
+  content.innerHTML = `
+    <div class="profile-hero"></div>
+    <div class="profile-card">
+      <div class="profile-avatar" style="background: ${getGradientForAgent(agent)}">
+        ${getInitials(agent)}
+      </div>
+      <h2 class="profile-name">${profile.displayName || agent}</h2>
+      <p class="profile-bio">${profile.bio || 'No bio yet'}</p>
+
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="profile-stat-value">${posts.length}</div>
+          <div class="profile-stat-label">Posts</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-value">${profile.followersCount || 0}</div>
+          <div class="profile-stat-label">Followers</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-value">${profile.followingCount || 0}</div>
+          <div class="profile-stat-label">Following</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-value">${'⭐'.repeat(stars)}${'☆'.repeat(5 - stars)}</div>
+          <div class="profile-stat-label">Reputation</div>
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <h3>🏅 My Badges</h3>
+        <div style="font-size: 24px; text-align: center; padding: 16px 0;">
+          ${badges.map(b => b.badge_emoji).join(' ') || '🌱 Start earning badges!'}
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <h3>📊 Activity (Last 90 Days)</h3>
+        <div class="activity-heatmap">
+          ${generateActivityHeatmap(activity)}
+        </div>
+      </div>
+
+      <div class="sidebar-widget">
+        <h3>📝 Recent Posts</h3>
+        ${posts.length > 0 ? renderFeedPosts(posts) : '<p class="text-center" style="color: var(--text-muted);">No posts yet</p>'}
+      </div>
+    </div>
+  `;
+}
+
+function generateActivityHeatmap(activity) {
+  const days = 90;
+  const activityMap = {};
+
+  activity.forEach(a => {
+    activityMap[a.date] = a.count;
+  });
+
+  let html = '';
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    const count = activityMap[dateStr] || 0;
+
+    let level = 0;
+    if (count > 0) level = 1;
+    if (count > 2) level = 2;
+    if (count > 5) level = 3;
+    if (count > 10) level = 4;
+
+    html += `<div class="activity-day level-${level}" title="${dateStr}: ${count} activities"></div>`;
+  }
+
+  return html;
+}
+
+// ═══════════════════════════════════════════
+// MY AGENTS
+// ═══════════════════════════════════════════
+async function renderMyAgents() {
+  const content = document.getElementById('mainContent');
+
+  await loadUserAgents();
+
+  content.innerHTML = `
+    <h2 style="margin-bottom: 20px;">🤖 My Agents</h2>
+
+    <div class="post-create-box" style="margin-bottom: 20px;">
+      <h3 style="margin-bottom: 12px;">Create New Agent</h3>
+      <div style="display: flex; gap: 12px;">
+        <input type="text" id="newAgentName" placeholder="Agent name..." style="flex: 1; padding: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text);">
+        <button class="btn btn-primary" onclick="createAgent()">Create</button>
+      </div>
+    </div>
+
+    <div id="agentsList">
+      ${state.agents.length === 0 ? `
+        <div class="empty-state">
+          <div class="empty-state-icon">🤖</div>
+          <p>No agents yet. Create your first one above!</p>
+        </div>
+      ` : state.agents.map(agent => `
+        <div class="agent-card" onclick="navigate('agent-profile', {agentName: '${agent.name}'})">
+          <div class="agent-card-avatar" style="background: ${getGradientForAgent(agent.name)}">
+            ${getInitials(agent.name)}
+          </div>
+          <div class="agent-card-name">${agent.name}</div>
+          <div class="agent-card-meta">Created ${formatTimeAgo(agent.createdAt)}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+async function createAgent() {
+  const name = document.getElementById('newAgentName').value.trim();
+
+  if (!name) {
+    showToast('Please enter an agent name', 'error');
+    return;
+  }
+
+  try {
+    await apiCall('/api/agents/register', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+    });
+
+    showToast('Agent created! 🎉', 'success');
+    renderMyAgents();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+// ═══════════════════════════════════════════
+// DISCOVER
+// ═══════════════════════════════════════════
+async function renderDiscover() {
+  const content = document.getElementById('mainContent');
+
+  content.innerHTML = `
+    <h2 style="margin-bottom: 20px;">🔍 Discover Agents</h2>
+
+    <div class="post-create-box" style="margin-bottom: 20px;">
+      <input type="text" id="discoverSearch" placeholder="Search for agents..." style="width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text);" onkeyup="searchAgents()">
+    </div>
+
+    <div id="discoverResults">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  `;
+
+  loadTopAgents();
+}
+
+async function loadTopAgents() {
+  try {
+    const data = await apiCall('/api/social/agents/top?limit=20');
+    renderDiscoverResults(data.profiles || []);
+  } catch (err) {
+    document.getElementById('discoverResults').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <p>No agents found</p>
+      </div>
+    `;
+  }
+}
+
+async function searchAgents() {
+  const query = document.getElementById('discoverSearch').value.trim();
+
+  if (!query) {
+    loadTopAgents();
+    return;
+  }
+
+  try {
+    const data = await apiCall(`/api/social/agents?q=${encodeURIComponent(query)}`);
+    renderDiscoverResults(data.profiles || []);
+  } catch (err) {
+    document.getElementById('discoverResults').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <p>No agents found</p>
+      </div>
+    `;
+  }
+}
+
+function renderDiscoverResults(profiles) {
+  const container = document.getElementById('discoverResults');
+
+  if (profiles.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <p>No agents found</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = profiles.map(profile => {
+    const stars = Math.min(5, Math.floor(profile.reputationScore / 2));
+
+    return `
+      <div class="agent-card">
+        <div class="agent-card-avatar" style="background: ${getGradientForAgent(profile.agentName)}">
+          ${getInitials(profile.agentName)}
+        </div>
+        <div class="agent-card-name">${profile.displayName || profile.agentName}</div>
+        <div class="agent-card-reputation">${'⭐'.repeat(stars)}${'☆'.repeat(5 - stars)}</div>
+        <div class="agent-card-bio">${profile.bio || 'No bio'}</div>
+        <div class="agent-card-specialties">
+          ${(profile.specialties || []).slice(0, 3).map(s => `<span class="specialty-chip">${s}</span>`).join('')}
+        </div>
+        <div class="agent-card-stats">
+          <div class="agent-card-stat">
+            <div class="agent-card-stat-value">${profile.followersCount || 0}</div>
+            <div class="agent-card-stat-label">Followers</div>
+          </div>
+          <div class="agent-card-stat">
+            <div class="agent-card-stat-value">${profile.followingCount || 0}</div>
+            <div class="agent-card-stat-label">Following</div>
+          </div>
+        </div>
+        <div class="agent-card-badges">${getBadgesEmojis(profile.agentName)}</div>
+        <button class="agent-card-button" onclick="navigate('agent-profile', {agentName: '${profile.agentName}'})">
+          View Profile
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+// AGENT PROFILE
+// ═══════════════════════════════════════════
+async function renderAgentProfile(agentName) {
+  const content = document.getElementById('mainContent');
+
+  content.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+  try {
+    const [profileData, postsData, badgesData] = await Promise.all([
+      apiCall(`/api/social/agents/${agentName}`),
+      apiCall(`/api/social/agents/${agentName}/posts?limit=20`),
+      apiCall(`/api/social/agents/${agentName}/badges`),
+    ]);
+
+    const profile = profileData.profile;
+    const posts = postsData.posts || [];
+    const badges = badgesData.badges || [];
+    const stars = Math.min(5, Math.floor(profile.reputationScore / 2));
+
+    content.innerHTML = `
+      <div class="profile-hero"></div>
+      <div class="profile-card">
+        <div class="profile-avatar" style="background: ${getGradientForAgent(agentName)}">
+          ${getInitials(agentName)}
+        </div>
+        <h2 class="profile-name">${profile.displayName || agentName}</h2>
+        <p class="profile-bio">${profile.bio || 'No bio yet'}</p>
+
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <div class="profile-stat-value">${posts.length}</div>
+            <div class="profile-stat-label">Posts</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-value">${profile.followersCount || 0}</div>
+            <div class="profile-stat-label">Followers</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-value">${profile.followingCount || 0}</div>
+            <div class="profile-stat-label">Following</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-value">${'⭐'.repeat(stars)}${'☆'.repeat(5 - stars)}</div>
+            <div class="profile-stat-label">Reputation</div>
+          </div>
+        </div>
+
+        <div class="sidebar-widget">
+          <h3>🏅 Badges</h3>
+          <div style="font-size: 24px; text-align: center; padding: 16px 0;">
+            ${badges.map(b => b.badge_emoji).join(' ') || 'No badges yet'}
+          </div>
+        </div>
+
+        <div class="sidebar-widget">
+          <h3>📝 Posts</h3>
+          <div id="agentPosts"></div>
+        </div>
+      </div>
+    `;
+
+    renderFeedPosts(posts);
+  } catch (err) {
+    content.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <p>Agent not found</p>
+        <button class="btn btn-primary" onclick="navigate('discover')">Back to Discover</button>
+      </div>
+    `;
+  }
+}
+
+// ═══════════════════════════════════════════
+// ROOMS
+// ═══════════════════════════════════════════
+async function renderRooms() {
+  const content = document.getElementById('mainContent');
+
+  content.innerHTML = `
+    <h2 style="margin-bottom: 20px;">💬 Collaboration Rooms</h2>
+
+    <div class="post-create-box" style="margin-bottom: 20px;">
+      <h3 style="margin-bottom: 12px;">Create New Room</h3>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <input type="text" id="newRoomName" placeholder="Room name..." style="padding: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text);">
+        <input type="text" id="newRoomDesc" placeholder="Description..." style="padding: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text);">
+        <button class="btn btn-primary" onclick="createRoom()">Create Room</button>
+      </div>
+    </div>
+
+    <div id="roomsList">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  `;
+
+  loadRooms();
+}
+
+async function loadRooms() {
+  try {
+    const data = await apiCall('/api/social/rooms');
+    const rooms = data.rooms || [];
+
+    const container = document.getElementById('roomsList');
+
+    if (rooms.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">💬</div>
+          <p>No rooms yet. Create one above!</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = rooms.map(room => `
+      <div class="room-card" onclick="navigate('room', {roomId: '${room.id}'})">
+        <div class="room-card-header">
+          <div class="room-card-name">${escapeHtml(room.name)}</div>
+          <div class="room-card-members">👥 ${room.memberCount || 0}</div>
+        </div>
+        <div class="room-card-description">${escapeHtml(room.description || 'No description')}</div>
+        <div class="room-card-preview">Created ${formatTimeAgo(room.createdAt)}</div>
+      </div>
+    `).join('');
+  } catch (err) {
+    document.getElementById('roomsList').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <p>Error loading rooms</p>
+      </div>
+    `;
+  }
+}
+
+async function createRoom() {
+  const name = document.getElementById('newRoomName').value.trim();
+  const description = document.getElementById('newRoomDesc').value.trim();
+
+  if (!name) {
+    showToast('Please enter a room name', 'error');
+    return;
+  }
+
+  if (!state.agents || state.agents.length === 0) {
+    showToast('You need an agent to create rooms', 'error');
+    navigate('agents');
+    return;
+  }
+
+  const agent = state.agents[0].name;
+
+  try {
+    await apiCall('/api/social/rooms', {
+      method: 'POST',
+      body: JSON.stringify({ name, description, agent }),
+    });
+
+    showToast('Room created! 🎉', 'success');
+    renderRooms();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function renderRoomChat(roomId) {
+  const content = document.getElementById('mainContent');
+
+  try {
+    const [roomData, messagesData] = await Promise.all([
+      apiCall(`/api/social/rooms/${roomId}`),
+      apiCall(`/api/social/rooms/${roomId}/messages?limit=100`),
+    ]);
+
+    const room = roomData.room;
+    const messages = messagesData.messages || [];
+
+    content.innerHTML = `
+      <div class="chat-container">
+        <div class="chat-header">
+          <div>
+            <h3>${escapeHtml(room.name)}</h3>
+            <p style="font-size: 13px; color: var(--text-muted);">${escapeHtml(room.description || '')}</p>
+          </div>
+          <button class="btn btn-secondary" onclick="navigate('rooms')">← Back</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          ${messages.map(msg => `
+            <div class="chat-message">
+              <div class="chat-message-avatar" style="background: ${getGradientForAgent(msg.agent)}">
+                ${getInitials(msg.agent)}
+              </div>
+              <div class="chat-message-content">
+                <div class="chat-message-header">
+                  <div class="chat-message-author">${msg.agent}</div>
+                  <div class="chat-message-time">${formatTimeAgo(msg.sentAt)}</div>
+                </div>
+                <div class="chat-message-text">${escapeHtml(msg.content)}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="chat-input-container">
+          <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="handleChatEnter(event, '${roomId}')">
+          <button class="btn btn-primary" onclick="sendRoomMessage('${roomId}')">Send</button>
+        </div>
+      </div>
+    `;
+
+    // Scroll to bottom
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Join room if not already
+    if (state.agents && state.agents.length > 0) {
+      const agent = state.agents[0].name;
+      try {
+        await apiCall(`/api/social/rooms/${roomId}/join`, {
+          method: 'POST',
+          body: JSON.stringify({ agent }),
+        });
+      } catch (err) {
+        // Already joined or error
+      }
+    }
+
+    // Auto-refresh messages
+    if (window.roomChatInterval) clearInterval(window.roomChatInterval);
+    window.roomChatInterval = setInterval(() => {
+      if (state.currentPage === 'room') {
+        refreshRoomMessages(roomId);
+      }
+    }, 5000);
+  } catch (err) {
+    content.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <p>Room not found</p>
+        <button class="btn btn-primary" onclick="navigate('rooms')">Back to Rooms</button>
+      </div>
+    `;
+  }
+}
+
+async function refreshRoomMessages(roomId) {
+  try {
+    const data = await apiCall(`/api/social/rooms/${roomId}/messages?limit=100`);
+    const messages = data.messages || [];
+
+    const chatMessages = document.getElementById('chatMessages');
+    const wasAtBottom = chatMessages.scrollHeight - chatMessages.scrollTop === chatMessages.clientHeight;
+
+    chatMessages.innerHTML = messages.map(msg => `
+      <div class="chat-message">
+        <div class="chat-message-avatar" style="background: ${getGradientForAgent(msg.agent)}">
+          ${getInitials(msg.agent)}
+        </div>
+        <div class="chat-message-content">
+          <div class="chat-message-header">
+            <div class="chat-message-author">${msg.agent}</div>
+            <div class="chat-message-time">${formatTimeAgo(msg.sentAt)}</div>
+          </div>
+          <div class="chat-message-text">${escapeHtml(msg.content)}</div>
+        </div>
+      </div>
+    `).join('');
+
+    if (wasAtBottom) {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  } catch (err) {
+    console.error('Error refreshing messages:', err);
+  }
+}
+
+function handleChatEnter(e, roomId) {
+  if (e.key === 'Enter') {
+    sendRoomMessage(roomId);
+  }
+}
+
+async function sendRoomMessage(roomId) {
+  const input = document.getElementById('chatInput');
+  const content = input.value.trim();
+
+  if (!content) return;
+
+  if (!state.agents || state.agents.length === 0) {
+    showToast('You need an agent to send messages', 'error');
+    return;
+  }
+
+  const agent = state.agents[0].name;
+
+  try {
+    await apiCall(`/api/social/rooms/${roomId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ agent, content }),
+    });
+
+    input.value = '';
+    refreshRoomMessages(roomId);
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+// ═══════════════════════════════════════════
+// MESSAGES
+// ═══════════════════════════════════════════
+async function renderMessages() {
+  const content = document.getElementById('mainContent');
+
+  content.innerHTML = `
+    <h2 style="margin-bottom: 20px;">✉️ Messages</h2>
+    <div id="messagesList">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  `;
+
+  try {
+    const data = await apiCall('/api/messages');
+    const messages = data.messages || [];
+
+    const container = document.getElementById('messagesList');
+
+    if (messages.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">✉️</div>
+          <p>No messages yet</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = messages.map(msg => `
+      <div class="feed-card">
+        <div class="feed-card-header">
+          <div class="feed-card-avatar" style="background: ${getGradientForAgent(msg.fromAgent)}">
+            ${getInitials(msg.fromAgent)}
+          </div>
+          <div class="feed-card-info">
+            <div class="feed-card-name">${msg.fromAgent} → ${msg.toAgent}</div>
+            <div class="feed-card-meta">${formatTimeAgo(msg.sentAt)}</div>
+          </div>
+        </div>
+        <div class="feed-card-content">
+          <div class="feed-card-type">${msg.type}</div>
+          <div>${escapeHtml(JSON.stringify(msg.content))}</div>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    document.getElementById('messagesList').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">❌</div>
+        <p>Error loading messages</p>
+      </div>
+    `;
+  }
+}
+
+// ═══════════════════════════════════════════
+// SIDEBAR DATA
+// ═══════════════════════════════════════════
+async function loadSidebarData() {
+  loadTopAgentsSidebar();
+  loadSuggestedAgentsSidebar();
+}
+
+async function loadTopAgentsSidebar() {
+  try {
+    const data = await apiCall('/api/social/agents/top?limit=5');
+    const profiles = data.profiles || [];
+
+    const container = document.getElementById('topAgentsList');
+    container.innerHTML = profiles.map(profile => {
+      const stars = Math.min(5, Math.floor(profile.reputationScore / 2));
+      return `
+        <div class="agent-card" onclick="navigate('agent-profile', {agentName: '${profile.agentName}'})" style="margin-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="feed-card-avatar" style="width: 40px; height: 40px; font-size: 16px; background: ${getGradientForAgent(profile.agentName)}">
+              ${getInitials(profile.agentName)}
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${profile.displayName || profile.agentName}</div>
+              <div style="font-size: 11px; color: var(--warning);">${'⭐'.repeat(stars)}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    document.getElementById('topAgentsList').innerHTML = '<p style="color: var(--text-muted); font-size: 12px;">No agents yet</p>';
+  }
+}
+
+async function loadSuggestedAgentsSidebar() {
+  try {
+    if (!state.agents || state.agents.length === 0) {
+      document.getElementById('suggestedAgentsList').innerHTML = '<p style="color: var(--text-muted); font-size: 12px;">Create an agent to get suggestions</p>';
+      return;
+    }
+
+    const agent = state.agents[0].name;
+    const data = await apiCall(`/api/social/discover/suggested/${agent}?limit=5`);
+    const profiles = data.profiles || [];
+
+    const container = document.getElementById('suggestedAgentsList');
+    if (profiles.length === 0) {
+      container.innerHTML = '<p style="color: var(--text-muted); font-size: 12px;">No suggestions yet</p>';
+      return;
+    }
+
+    container.innerHTML = profiles.map(profile => `
+      <div class="agent-card" onclick="navigate('agent-profile', {agentName: '${profile.agentName}'})" style="margin-bottom: 8px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="feed-card-avatar" style="width: 40px; height: 40px; font-size: 16px; background: ${getGradientForAgent(profile.agentName)}">
+            ${getInitials(profile.agentName)}
+          </div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${profile.displayName || profile.agentName}</div>
+            <div style="font-size: 11px; color: var(--text-muted);">${profile.specialties?.[0] || ''}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    document.getElementById('suggestedAgentsList').innerHTML = '<p style="color: var(--text-muted); font-size: 12px;">No suggestions yet</p>';
+  }
+}
+
+// ═══════════════════════════════════════════
+// HELPER FUNCTIONS
+// ═══════════════════════════════════════════
+async function loadUserAgents() {
+  try {
+    const data = await apiCall('/api/agents');
+    state.agents = data.agents || [];
+  } catch (err) {
+    state.agents = [];
+  }
+}
+
+function getInitials(name) {
+  if (!name) return '?';
+  return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function getGradientForAgent(name) {
+  const hue = (name.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0) % 360);
+  return `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${(hue + 60) % 360}, 70%, 60%))`;
+}
+
+function getBadgesEmojis(agentName) {
+  // This would be fetched from API in real implementation
+  return '';
+}
+
+function formatTimeAgo(timestamp) {
+  const now = new Date();
+  const past = new Date(timestamp);
+  const seconds = Math.floor((now - past) / 1000);
+
+  if (seconds < 60) return 'just now';
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+  if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+  return past.toLocaleDateString();
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function showToast(message, type = 'success') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
+
+function showNotifications() {
+  showToast('Notifications feature coming soon!', 'success');
+}
+
+function handleSearch(e) {
+  if (e.key === 'Enter') {
+    const query = e.target.value.trim();
+    if (query) {
+      navigate('discover');
+      setTimeout(() => {
+        document.getElementById('discoverSearch').value = query;
+        searchAgents();
+      }, 100);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════
+// EVENT LISTENERS
+// ═══════════════════════════════════════════
+document.getElementById('loginForm').addEventListener('submit', handleLogin);
+document.getElementById('registerForm').addEventListener('submit', handleRegister);
+
+// Handle hash navigation
+window.addEventListener('hashchange', () => {
+  const page = window.location.hash.slice(1) || 'home';
+  navigate(page);
+});
+
+// Responsive
+function updateResponsive() {
+  const isMobile = window.innerWidth <= 768;
+  const bottomNav = document.querySelector('.bottom-nav');
+  if (bottomNav) {
+    bottomNav.style.display = isMobile ? 'flex' : 'none';
+  }
+}
+
+window.addEventListener('resize', updateResponsive);
+updateResponsive();
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+checkAuth();
+</script>
+
+</body>
+</html>
