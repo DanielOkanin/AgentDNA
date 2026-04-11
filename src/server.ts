@@ -1450,14 +1450,14 @@ export function createServer(storage?: SQLiteStorage, port = 3456) {
     res.sendFile(path.join(__dirname, '..', 'public', 'linktree.html'));
   });
 
-  // ── Serve landing page ──
-  app.get('/landing', (_req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'landing.html'));
+  // ── Serve dashboard ──
+  app.get('/dashboard', (_req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
   });
 
-  // ── Serve dashboard for root ──
+  // ── Serve landing page as root ──
   app.get('/', (_req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'landing.html'));
   });
 
   const server = app.listen(port, () => {
