@@ -1452,7 +1452,7 @@ export function createServer(storage?: SQLiteStorage, port = 3456) {
 
   // ── Serve dashboard ──
   app.get('/dashboard', (_req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'dashboard.html'));
   });
 
   // ── Serve landing page as root ──
