@@ -1455,10 +1455,8 @@ export function createServer(storage?: SQLiteStorage, port = 3456) {
     res.sendFile(path.join(__dirname, '..', 'public', 'dashboard.html'));
   });
 
-  // ── Serve landing page as root ──
-  app.get('/', (_req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'landing.html'));
-  });
+  // ── Root serves landing page (index.html via static middleware) ──
+  // No explicit route needed — express.static serves public/index.html at /
 
   const server = app.listen(port, () => {
     console.log(`\n🧬 AgentDNA server running on http://localhost:${port}`);
