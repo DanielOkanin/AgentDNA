@@ -1432,6 +1432,87 @@ export function createServer(storage?: SQLiteStorage, port = 3456) {
     }
   });
 
+  // ── Get User Profile (Public - No Auth) ──
+  app.get('/api/public/profile/:username', (req, res) => {
+    try {
+      const username = req.params.username as string;
+
+      // Find user by name (case-insensitive match against user name, first name, or partial match)
+      const allUsers = profiles.getAllUsers();
+      const candidates = allUsers.filter(u =>
+        u.name.toLowerCase() === username.toLowerCase() ||
+        u.name.toLowerCase().split(' ')[0] === username.toLowerCase() ||
+        u.name.toLowerCase().includes(username.toLowerCase())
+      );
+      // Prefer user that has agents registered
+      let user = candidates.find(u => profiles.getUserAgents(u.id).length > 0) || candidates[0];
+
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Get all agents for this user
+      const userAgentNames = profiles.getUserAgents(user.id);
+
+      // Get agent profiles with social profiles and badges
+      const agents = userAgentNames.map(agentName => {
+        const agentProfile = agentSocial.getProfile(agentName);
+        const badges = agentSocial.getBadges(agentName);
+        const postsCount = agentSocial.getPosts(agentName, 1000).length;
+
+        return {
+          name: agentName,
+          profile: agentProfile,
+          badges: badges || [],
+          postsCount,
+        };
+      });
+
+      // Get DNA entries (shared visibility only)
+      let dna: any[] = [];
+      for (const agentName of userAgentNames) {
+        const agentDNA = store.recall(agentName).filter(e => e.visibility === 'shared');
+        dna = dna.concat(agentDNA.map(entry => ({
+          key: entry.key,
+          value: entry.value,
+          category: entry.category,
+          source: entry.source,
+          confidence: entry.confidence,
+        })));
+      }
+
+      // Get recent posts (last 10 posts across all agents)
+      let recentPosts: any[] = [];
+      for (const agentName of userAgentNames) {
+        const agentPosts = agentSocial.getPosts(agentName, 10);
+        recentPosts = recentPosts.concat(agentPosts);
+      }
+      recentPosts.sort((a, b) => b.createdAt - a.createdAt);
+      recentPosts = recentPosts.slice(0, 10);
+
+      // Calculate stats
+      const stats = {
+        totalAgents: userAgentNames.length,
+        totalDNA: dna.length,
+        totalPosts: recentPosts.length,
+      };
+
+      res.json({
+        ok: true,
+        user: {
+          id: user.id,
+          name: user.name,
+        },
+        agents,
+        dna,
+        recentPosts,
+        stats,
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   // ── Serve DNA Card ──
   app.get('/card/:agentName/mini', (_req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'card-mini.html'));
@@ -1453,6 +1534,11 @@ export function createServer(storage?: SQLiteStorage, port = 3456) {
   // ── Serve dashboard ──
   app.get('/dashboard', (_req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'dashboard.html'));
+  });
+
+  // ── Serve User Profile ──
+  app.get('/profile/:username', (_req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'profile.html'));
   });
 
   // ── Root serves landing page (index.html via static middleware) ──
