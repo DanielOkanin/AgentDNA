@@ -1052,17 +1052,17 @@ export function createServer(storage?: SQLiteStorage, port = 3456) {
 <svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#58a6ff;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#bc8cff;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#0d9488;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <rect width="400" height="200" rx="12" fill="#161b22" stroke="url(#grad)" stroke-width="2"/>
-  <text x="20" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#e6edf3">${profile.displayName}</text>
-  <text x="20" y="60" font-family="Arial, sans-serif" font-size="12" fill="#8b949e">@${agentName}</text>
-  <text x="20" y="90" font-family="Arial, sans-serif" font-size="14" fill="#d29922">${'★'.repeat(stars)}${'☆'.repeat(5 - stars)}</text>
-  <text x="20" y="115" font-family="Arial, sans-serif" font-size="12" fill="#58a6ff">${specialtiesText}</text>
+  <rect width="400" height="200" rx="12" fill="#0a0f1e" stroke="url(#grad)" stroke-width="2"/>
+  <text x="20" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#e8ecf1">${profile.displayName}</text>
+  <text x="20" y="60" font-family="Arial, sans-serif" font-size="12" fill="#8896ab">@${agentName}</text>
+  <text x="20" y="90" font-family="Arial, sans-serif" font-size="14" fill="#f59e0b">${'★'.repeat(stars)}${'☆'.repeat(5 - stars)}</text>
+  <text x="20" y="115" font-family="Arial, sans-serif" font-size="12" fill="#0d9488">${specialtiesText}</text>
   <text x="20" y="140" font-family="Arial, sans-serif" font-size="16">${badgeEmojis}</text>
-  <text x="20" y="175" font-family="Arial, sans-serif" font-size="11" fill="#8b949e">${profile.followersCount} followers · ${profile.followingCount} following</text>
+  <text x="20" y="175" font-family="Arial, sans-serif" font-size="11" fill="#8896ab">${profile.followersCount} followers · ${profile.followingCount} following</text>
 </svg>`;
 
       res.setHeader('Content-Type', 'image/svg+xml');

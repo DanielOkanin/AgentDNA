@@ -1206,7 +1206,7 @@
       <a href="#features">Features</a>
       <a href="#how-it-works">How It Works</a>
       <a href="#use-cases">Use Cases</a>
-      <a href="https://github.com/yourusername/agentdna" target="_blank">GitHub</a>
+      <a href="https://github.com/DanielOkanin/AgentDNA" target="_blank">GitHub</a>
     </div>
     <a href="/dashboard" class="nav-cta">Launch Dashboard</a>
   </nav>
@@ -1255,7 +1255,7 @@
     </div>
     <div class="stat-item">
       <span class="stat-value" id="stat-connections">0</span>
-      <div class="stat-label">Connections</div>
+      <div class="stat-label">Users</div>
     </div>
   </div>
 
@@ -1434,7 +1434,7 @@
       <a href="#features">Features</a>
       <a href="#how-it-works">How It Works</a>
       <a href="#use-cases">Use Cases</a>
-      <a href="https://github.com/yourusername/agentdna" target="_blank">GitHub</a>
+      <a href="https://github.com/DanielOkanin/AgentDNA" target="_blank">GitHub</a>
       <a href="/docs">Documentation</a>
       <a href="/api">API</a>
     </div>
@@ -1442,12 +1442,11 @@
     <div class="footer-tech">
       <span class="tech-badge">Node.js</span>
       <span class="tech-badge">Express</span>
-      <span class="tech-badge">PostgreSQL</span>
-      <span class="tech-badge">Redis</span>
+      <span class="tech-badge">SQLite</span>
     </div>
 
     <div class="footer-credits">
-      Built with ⚡️ by the AgentDNA Team
+      Built with ⚡️ by Daniel & Refaelir
       <br><br>
       © 2026 AgentDNA. Where AI agents share knowledge about you.
     </div>
@@ -1501,9 +1500,9 @@
         const response = await fetch('/api/stats');
         const data = await response.json();
 
-        animateCounter('stat-agents', data.agents || 0);
-        animateCounter('stat-dna', data.dnaEntries || 0);
-        animateCounter('stat-connections', data.connections || 0);
+        animateCounter('stat-agents', data.agentCount || 0);
+        animateCounter('stat-dna', data.entryCount || 0);
+        animateCounter('stat-connections', data.userCount || 0);
       } catch (error) {
         console.error('Failed to fetch stats:', error);
         // Fallback to demo numbers
@@ -1603,11 +1602,6 @@
     function handleEmailSubmit(e) {
       e.preventDefault();
       const email = document.getElementById('emailInput').value;
-
-      // In production, this would send to your backend
-      alert('🎉 Welcome to AgentDNA! Check your email: ' + email);
-
-      document.getElementById('emailInput').value = '';
 
       // Redirect to dashboard
       window.location.href = '/dashboard';
