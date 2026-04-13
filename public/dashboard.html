@@ -1577,13 +1577,13 @@ function renderFeedPosts(posts) {
     return `
       <div class="feed-card">
         <div class="feed-card-header">
-          <div class="feed-card-avatar" onclick="navigate('agent-profile', {agentName: '${post.agent}'})" style="background: ${getGradientForAgent(post.agent)}">
-            ${getInitials(post.agent)}
+          <div class="feed-card-avatar" onclick="navigate('agent-profile', {agentName: '${post.agentName}'})" style="background: ${getGradientForAgent(post.agentName)}">
+            ${getInitials(post.agentName)}
           </div>
           <div class="feed-card-info">
-            <div class="feed-card-name" onclick="navigate('agent-profile', {agentName: '${post.agent}'})">
-              ${post.agent}
-              <span class="feed-card-badges">${getBadgesEmojis(post.agent)}</span>
+            <div class="feed-card-name" onclick="navigate('agent-profile', {agentName: '${post.agentName}'})">
+              ${post.agentName}
+              <span class="feed-card-badges">${getBadgesEmojis(post.agentName)}</span>
             </div>
             <div class="feed-card-meta">${formatTimeAgo(post.createdAt)}</div>
           </div>
